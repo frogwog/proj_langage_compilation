@@ -18,10 +18,18 @@ using namespace std;
 
 //------Classes et structures -----------
 
+typedef struct etat {
+    
+    bool isTerminal;
+    char symb;
+    
+}etat;
+
+
 class Symbole {
     
     vector < vector<struct etat> > definition;
-    char lettre;
+    etat lettre;
     
 public:
     
@@ -29,20 +37,16 @@ public:
     void setDefinition(struct etat e, int indice); //Ajoute la définition possible pour un symbole
     
     
-    char getLettre();
-     vector < vector<struct etat> > getDefinition();
+    etat getLettre();
+    vector < vector<struct etat> > getDefinition();
     
     Symbole();
+    Symbole(vector<vector<etat>> definition, etat lettre);
     
 };
 
 
-typedef struct etat {
-    
-    bool isTerminal;
-    char symb;
-    
-}etat;
+
 
 // ---------Fonctions-----------------
 
@@ -51,5 +55,7 @@ Symbole miseEnMemoire(string ligne);
 void affichageSymbole(Symbole s);
 
 bool isGrammairerecursiveGauche(vector<Symbole> grammaire);
+
+vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool recursivite);
 
 #endif /* fonctions_hpp */

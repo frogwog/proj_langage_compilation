@@ -48,11 +48,14 @@ int main(int argc, const char * argv[]) {
     
     else cout << "Pas de récursivité détectée" << endl;
     
+    cout << endl << endl;
+    
+    vector<Symbole> grammSansRec = eliminationRecursiviteGauche(grammaire, test);
+    
+    for (int i =0; i < grammSansRec.size(); i++) {
+        affichageSymbole(grammSansRec[i]);
+    }
+    
 
-    
-    
-    
-    
-    
     return 0;
 }
