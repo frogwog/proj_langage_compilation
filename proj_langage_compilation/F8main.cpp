@@ -14,7 +14,7 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    vector<Symbole> symboles;
+    vector<Symbole> grammaire;
     
     ifstream fichier("/Users/Eddy/Desktop/test.txt", ios::in);
     
@@ -28,7 +28,7 @@ int main(int argc, const char * argv[]) {
             
             getline(fichier, ligne);
             
-            symboles.push_back(miseEnMemoire(ligne));
+            grammaire.push_back(miseEnMemoire(ligne));
         }
         fichier.close();
     }
@@ -36,9 +36,17 @@ int main(int argc, const char * argv[]) {
         cerr << "Impossible d'ouvrir le fichier !" << endl;
     }
     
-    for (int i =0; i < symboles.size(); i++) {
-        affichageSymbole(symboles[i]);
+    for (int i =0; i < grammaire.size(); i++) {
+        affichageSymbole(grammaire[i]);
     }
+    
+    bool test = isGrammairerecursiveGauche(grammaire);
+    
+    if (test) {
+        cout << "Récursivité détectée" << endl;
+    }
+    
+    else cout << "Pas de récursivité détectée" << endl;
     
 
     

@@ -98,3 +98,30 @@ void affichageSymbole(Symbole s) {
     }
     
 }
+
+
+
+bool isGrammairerecursiveGauche(vector<Symbole> grammaire) {
+    
+    vector<vector<etat>> testeur;
+    char l;
+    
+    for (int i = 0; i < grammaire.size(); i++) {
+        
+        testeur = grammaire[i].getDefinition();
+        l = grammaire[i].getLettre();
+        
+        for (int j=0; j < testeur.size(); j++) {
+            if (testeur[j][0].symb == l) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+
+
+
+

@@ -50,4 +50,6 @@ Symbole miseEnMemoire(string ligne);
 
 void affichageSymbole(Symbole s);
 
+bool isGrammairerecursiveGauche(vector<Symbole> grammaire);
+
 #endif /* fonctions_hpp */
