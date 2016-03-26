@@ -6,8 +6,8 @@
 //  Copyright © 2016 Edouard Soares. All rights reserved.
 //
 
-#ifndef F8fonctions_hpp
-#define F8fonctions_hpp
+#ifndef F08fonctions_hpp
+#define F08fonctions_hpp
 
 #include <stdio.h>
 #include <iostream>

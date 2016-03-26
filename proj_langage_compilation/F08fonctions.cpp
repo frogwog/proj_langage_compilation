@@ -6,7 +6,7 @@
 //  Copyright © 2016 Edouard Soares. All rights reserved.
 //
 
-#include "F8fonctions.hpp"
+#include "F08fonctions.hpp"
 
 //--------Fonctions de l'objet symbole-------------
 
@@ -167,6 +167,7 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
                     while ( testeur[j].size()) {
                         testeur[j].pop_back();
                     }
+                    
                     
                     
                     j++;
