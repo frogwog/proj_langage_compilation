@@ -21,7 +21,7 @@ using namespace std;
 typedef struct etat {
     
     bool isTerminal;
-    char symb;
+    char symb[2];
     
 }etat;
 
