@@ -15,7 +15,7 @@ void Symbole::setLettre(char c) {
     lettre.symb[0] = c;
     lettre.symb[1] = '\0';
     
-    if (lettre.symb[0] < 'A' || lettre.symb[0] > 'Z') {
+    if (lettre.symb[0] < 'A' || lettre.symb[0] > 'Z' || lettre.symb[0] != '#') {
         lettre.isTerminal = true;
     }
     else lettre.isTerminal = false;
@@ -67,12 +67,12 @@ Symbole miseEnMemoire(string ligne) {
             symbole.setLettre(ligne[i]); 
         }
         
-        else if (ligne[i] == ' ' && i != 1) {
+        else if (ligne[i] == '|') {
             
             indice ++;
         }
         
-        else if (ligne[i] != ' ') {
+        else if (ligne[i] != '|' && ligne[i] != '=') {
             
             e.symb[0] = ligne[i];
             e.symb[1] = '\0';
@@ -147,7 +147,7 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
         
         
         int j;
-        
+        unsigned long taille;
         vector<Symbole> grammaireSansRecursivite;
         
         vector<vector<etat>> testeur, nouvelleDefinition;
@@ -155,7 +155,6 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
         
         bool isRecursif;
         
-        hash.isTerminal = true;
         hash.symb[0] = '#';
         hash.symb[1] = '\0';
 
@@ -165,7 +164,7 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
             testeur = grammaire[i].getDefinition();
             l = grammaire[i].getLettre();
             nouvelleDefinition = testeur;
-            
+            taille = testeur.size();
             
             j = 0;
             isRecursif = false;
@@ -182,15 +181,18 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
                         testeur[j].pop_back();
                     }
                     testeur.erase(testeur.begin()+j);
+                    
                 }
                 
-                else j++;
+                else {
+                    
+                    if (taille != testeur.size()) { //Si il y a bien eu récursivité à gauche d'un symbole, sa taille a été modifiée, donc on peut ajouter le X' à la fin de chaque définition restante
+                        testeur[j].push_back(l);
+                    }
+                    j++;
+                }
             }
             
-            for (int k = 0;  k < testeur.size(); k++) { // On ajoute l'Etat X' à la suite des autres définitions du Symbole
-                
-                testeur[k].push_back(l);
-            }
             
             for (int k = 0 ; k < nouvelleDefinition.size(); k++) {
                 

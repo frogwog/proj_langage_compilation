@@ -16,7 +16,7 @@ int main(int argc, const char * argv[]) {
     
     vector<Symbole> grammaire;
     
-    ifstream fichier("/Users/Eddy/Desktop/test.txt", ios::in);
+    ifstream fichier("/Users/Eddy/Documents/Programming/XCode/proj_langage_compilation/proj_langage_compilation/test.txt", ios::in);
     
     if(fichier)
     {
