@@ -64,7 +64,7 @@ Symbole miseEnMemoire(string ligne) {
     for (int i = 0; i < ligne.size(); i++) {
         
         if (i == 0) {
-            symbole.setLettre(ligne[i]);
+            symbole.setLettre(ligne[i]); 
         }
         
         else if (ligne[i] == ' ' && i != 1) {
@@ -145,9 +145,10 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
     }
     else {
         
-        unsigned long taille;
         
-        vector<Symbole> grammaireSansRecursivité;
+        int j;
+        
+        vector<Symbole> grammaireSansRecursivite;
         
         vector<vector<etat>> testeur, nouvelleDefinition;
         etat l, hash;
@@ -165,11 +166,12 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
             l = grammaire[i].getLettre();
             nouvelleDefinition = testeur;
             
-            taille = testeur.size();
+            
+            j = 0;
             isRecursif = false;
             
             
-            for (int j=0; j < testeur.size(); j++) {
+            while (j < testeur.size()){
                 
                 if (testeur[j][0].symb[0] == l.symb[0]) { // Si il y a récursivité à Gauche
                     
@@ -180,44 +182,43 @@ vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool rec
                         testeur[j].pop_back();
                     }
                     testeur.erase(testeur.begin()+j);
-                    
-                    
-                    for (int k = 0;  k < testeur.size(); k++) { // On ajoute l'Etat X' à la suite des autres définitions du Symbole
-                        
-                        testeur[k].push_back(l);
-                    }
                 }
+                
+                else j++;
             }
             
-            for (int j = 0 ; j < nouvelleDefinition.size(); j++) {
+            for (int k = 0;  k < testeur.size(); k++) { // On ajoute l'Etat X' à la suite des autres définitions du Symbole
+                
+                testeur[k].push_back(l);
+            }
+            
+            for (int k = 0 ; k < nouvelleDefinition.size(); k++) {
                 
                 
-                
-                
-                if (nouvelleDefinition[j][0].symb[0] == l.symb[0]) { // On met en place le nouveau symbole X' en enlevant le X à gauche de ses définitions et en rajoutant X' à la fin
+                if (nouvelleDefinition[k][0].symb[0] == l.symb[0]) { // On met en place le nouveau symbole X' en enlevant le X à gauche de ses définitions et en rajoutant X' à la fin
                     
-                    nouvelleDefinition[j].erase(nouvelleDefinition[j].begin());
-                    nouvelleDefinition[j].push_back(l);
+                    nouvelleDefinition[k].erase(nouvelleDefinition[k].begin());
+                    nouvelleDefinition[k].push_back(l);
                     
                 }
                 
                 else { // On remplace les autres définitions par #
                     
-                    nouvelleDefinition[j].erase(nouvelleDefinition[j].begin(), nouvelleDefinition[j].end());
-                    nouvelleDefinition[j].push_back(hash);
+                    nouvelleDefinition[k].erase(nouvelleDefinition[k].begin(), nouvelleDefinition[k].end());
+                    nouvelleDefinition[k].push_back(hash);
                 }
                 
             }
             
             if (isRecursif) {
                 
-                grammaireSansRecursivité.push_back(*new Symbole(nouvelleDefinition, l));
+                grammaireSansRecursivite.push_back(*new Symbole(nouvelleDefinition, l));
             }
             
-            grammaireSansRecursivité.push_back(*new Symbole(testeur, grammaire[i].getLettre())); //On modifie la définition de l'Etat
+            grammaireSansRecursivite.push_back(*new Symbole(testeur, grammaire[i].getLettre())); //On modifie la définition de l'Etat
         }
         
-        return grammaireSansRecursivité;
+        return grammaireSansRecursivite;
     }
     
 }
