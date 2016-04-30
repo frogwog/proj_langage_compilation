@@ -56,6 +56,6 @@ void affichageSymbole(Symbole s);
 
 bool isGrammairerecursiveGauche(vector<Symbole> grammaire);
 
-vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool recursivite);
+vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire);
 
 #endif /* fonctions_hpp */

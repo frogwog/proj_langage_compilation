@@ -137,92 +137,98 @@ bool isGrammairerecursiveGauche(vector<Symbole> grammaire) {
 
 
 
-vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire, bool recursivite){
+vector<Symbole> eliminationRecursiviteGauche(vector<Symbole> grammaire){
     
-    if (recursivite == false) {
+    int j;
+    unsigned long taille;
+    vector<Symbole> grammaireSansRecursivite;
+    
+    vector<vector<etat>> testeur, nouvelleDefinition;
+    etat l, hash;
+    
+    bool isRecursif, isHash;
+    
+    hash.symb[0] = '#';
+    hash.symb[1] = '\0';
+    
+    
+    for (int i = 0; i < grammaire.size(); i++) {
         
-        return grammaire;
-    }
-    else {
+        testeur = grammaire[i].getDefinition();
+        l = grammaire[i].getLettre();
+        nouvelleDefinition = testeur;
+        taille = testeur.size();
+        
+        j = 0;
+        isRecursif = false;
+        isHash = false;
         
         
-        int j;
-        unsigned long taille;
-        vector<Symbole> grammaireSansRecursivite;
         
-        vector<vector<etat>> testeur, nouvelleDefinition;
-        etat l, hash;
-        
-        bool isRecursif;
-        
-        hash.symb[0] = '#';
-        hash.symb[1] = '\0';
-
-        
-        for (int i = 0; i < grammaire.size(); i++) {
+        while (j < testeur.size()){
             
-            testeur = grammaire[i].getDefinition();
-            l = grammaire[i].getLettre();
-            nouvelleDefinition = testeur;
-            taille = testeur.size();
-            
-            j = 0;
-            isRecursif = false;
-            
-            
-            while (j < testeur.size()){
+            if (testeur[j][0].symb[0] == l.symb[0]) { // Si il y a récursivité à Gauche
                 
-                if (testeur[j][0].symb[0] == l.symb[0]) { // Si il y a récursivité à Gauche
-                    
-                    isRecursif = true;
-                    l.symb[1] = '\''; // On crée la lettre X'
-                    
-                    while ( testeur[j].size()) { //On supprime la définition où il y a la récursivité à Gauche
-                        testeur[j].pop_back();
-                    }
-                    testeur.erase(testeur.begin()+j);
-                    
+                isRecursif = true;
+                
+                while ( testeur[j].size()) { //On supprime la définition où il y a la récursivité à Gauche
+                    testeur[j].pop_back();
                 }
                 
-                else {
-                    
-                    if (taille != testeur.size()) { //Si il y a bien eu récursivité à gauche d'un symbole, sa taille a été modifiée, donc on peut ajouter le X' à la fin de chaque définition restante
-                        testeur[j].push_back(l);
-                    }
-                    j++;
-                }
+                testeur.erase(testeur.begin()+j);
             }
             
-            
-            for (int k = 0 ; k < nouvelleDefinition.size(); k++) {
-                
-                
-                if (nouvelleDefinition[k][0].symb[0] == l.symb[0]) { // On met en place le nouveau symbole X' en enlevant le X à gauche de ses définitions et en rajoutant X' à la fin
-                    
-                    nouvelleDefinition[k].erase(nouvelleDefinition[k].begin());
-                    nouvelleDefinition[k].push_back(l);
-                    
-                }
-                
-                else { // On remplace les autres définitions par #
-                    
-                    nouvelleDefinition[k].erase(nouvelleDefinition[k].begin(), nouvelleDefinition[k].end());
-                    nouvelleDefinition[k].push_back(hash);
-                }
-                
-            }
-            
-            if (isRecursif) {
-                
-                grammaireSansRecursivite.push_back(*new Symbole(nouvelleDefinition, l));
-            }
-            
-            grammaireSansRecursivite.push_back(*new Symbole(testeur, grammaire[i].getLettre())); //On modifie la définition de l'Etat
+            else j++;
         }
         
-        return grammaireSansRecursivite;
+        if (taille != testeur.size()) { //Si il y a bien eu récursivité à gauche d'un symbole, sa taille a été modifiée, donc on peut ajouter le X' à la fin de chaque définition restante
+            
+            l.symb[1] = '\''; // On crée la lettre X'
+            
+            for (int k = 0; k < testeur.size(); k++) {
+                
+                if (testeur[k][0].symb[0] != hash.symb[0]) {
+                    
+                    testeur[k].push_back(l);
+                }
+            }
+        }
+        
+        
+        for (int k = 0 ; k < nouvelleDefinition.size(); k++) {
+            
+            
+            if (nouvelleDefinition[k][0].symb[0] == l.symb[0]) { // On met en place le nouveau symbole X' en enlevant le X à gauche de ses définitions et en rajoutant X' à la fin
+                
+                nouvelleDefinition[k].erase(nouvelleDefinition[k].begin());
+                nouvelleDefinition[k].push_back(l);
+                
+            }
+            
+            else if (isHash == false) { // On remplace les autres définitions par #
+                
+                nouvelleDefinition[k].erase(nouvelleDefinition[k].begin(), nouvelleDefinition[k].end());
+                nouvelleDefinition[k].push_back(hash);
+                isHash = true;
+            }
+            
+            else {
+                nouvelleDefinition[k].erase(nouvelleDefinition[k].begin(), nouvelleDefinition[k].end());
+                nouvelleDefinition.erase(nouvelleDefinition.begin()+k);
+            }
+            
+        }
+        
+        if (isRecursif) {
+            
+            grammaireSansRecursivite.push_back(*new Symbole(nouvelleDefinition, l));
+        }
+        
+        grammaireSansRecursivite.push_back(*new Symbole(testeur, grammaire[i].getLettre())); //On modifie la définition de l'Etat
     }
     
+    return grammaireSansRecursivite;
+
 }
 
 

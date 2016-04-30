@@ -43,18 +43,19 @@ int main(int argc, const char * argv[]) {
     bool test = isGrammairerecursiveGauche(grammaire);
     
     if (test) {
-        cout << "Récursivité détectée" << endl;
+        cout << endl << "Récursivité détectée" << endl << endl;
+        
+        vector<Symbole> grammSansRec = eliminationRecursiviteGauche(grammaire);
+        
+        for (int i =0; i < grammSansRec.size(); i++) {
+            affichageSymbole(grammSansRec[i]);
+        }
     }
     
-    else cout << "Pas de récursivité détectée" << endl;
+    else cout << endl << "Pas de récursivité détectée" << endl;
     
-    cout << endl << endl;
     
-    vector<Symbole> grammSansRec = eliminationRecursiviteGauche(grammaire, test);
-    
-    for (int i =0; i < grammSansRec.size(); i++) {
-        affichageSymbole(grammSansRec[i]);
-    }
+    cout << endl;
     
 
     return 0;
